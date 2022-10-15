@@ -1,22 +1,48 @@
 from components.aes import Aes
-from components.rsa import Rsa
+import base64
 
-def main():
+def encode():
     mensagem = open("test.txt", "r").read()
-    # mensagem = "bia bia"
 
-    pabllo = Rsa()
+    # aesObject1, aesObject2 = Aes(), Aes()
     aesObject1 = Aes()
-    aesObject2 = Aes()
-
     cifraDaMensagem, numberOnce = aesObject1.CtrEncryption(mensagem)
-    nonceEncrypted = pabllo.OAEPEncryption(pabllo.publicKey, numberOnce.to_bytes(16, "big"))
+    print(f"cifraDaMensagem: {cifraDaMensagem}\n")
+    k = base64.b64encode(cifraDaMensagem)
+    print(f"{k}\n")
+    print(f"{base64.b64decode(k)}\n")
+    
+    # """
+    # Escrita dos arquivos.
+    # """
+    with open("nonce.txt", "w") as arquivo:
+        arquivo.write(str(numberOnce))
 
-    nonceDecrypted = pabllo.OAEPDecryption(pabllo.privateKey, nonceEncrypted)
-    mensagemFinal = aesObject2.CtrDecryption(cifraDaMensagem, int.from_bytes(nonceDecrypted, 'big'))
-    print(mensagemFinal)
+    with open("key.txt", "w") as arquivo:
+        arquivo.write(str(aesObject1.key))
 
-    assert mensagem == mensagemFinal
+    with open("mensagem_encrypted.txt", "wb") as arquivo:
+        arquivo.write(base64.b64encode(cifraDaMensagem))
 
-if __name__ == '__main__': 
-    main()
+    """
+    Leitura dos arquivos
+    """
+    # with open("mensagem_encrypted.txt", "rb") as arquivo:
+    #     z = arquivo.read()
+    #     print(f"{z}\n")
+    #     g = base64.b64decode(z)
+    #     print(f"{g}\n")
+
+    # with open("nonce.txt", "r") as arquivo:
+    #     nonce = int(arquivo.read())
+
+    # with open("nonce.txt", "r") as arquivo:
+    #     key = int(arquivo.read())
+
+    # aesObject2 = Aes()
+
+    # mensagemFinal = aesObject2.CtrDecryption(g, nonce)
+
+    # print(mensagemFinal)
+
+encode()
