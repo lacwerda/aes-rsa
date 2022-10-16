@@ -9,9 +9,9 @@ def main():
 
     cifraDaMensagem, numberOnce = aesObject1.CtrEncryption(mensagem)
     
-    # # """
-    # # Escrita dos arquivos.
-    # # """
+    """
+    Escrita dos arquivos.
+    """
     with open("files/nonce.txt", "w") as arquivo:
         arquivo.write(str(numberOnce))
 
