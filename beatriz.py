@@ -1,12 +1,14 @@
-from components.aes import Aes
 from components.rsa import Rsa
 
 def main():
     mensagem = open("files/test.txt", "r").read()
 
+    if len(mensagem) > 186:
+        mensagem = mensagem[:186]
+
     bia = Rsa()
 
-    mensagem_cifrada = letra = bia.OAEPEncryption(bia.publicKey, bytes(mensagem, 'utf-8'))
+    mensagem_cifrada = bia.OAEPEncryption(bia.publicKey, bytes(mensagem, 'utf-8'))
 
     """
     Leitura dos arquivos
